@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "version": "1.0.0",
+  "product": "pipmcp",
+  "credential": "PIPMCP_API_KEY",
+  "skills": [
+    {
+      "name": "pipmcp-firecrawl",
+      "description": "Connect AI agents to Firecrawl using one PipMCP API key and actual hosted tool discovery."
+    }
+  ],
+  "files": {
+    "skills/pipmcp-firecrawl/SKILL.md": "97b2627868cb6cf6afdfd4484b3a3e3a000ae5154a234dc8a0c60f9f14dece63"
+  }
+}
