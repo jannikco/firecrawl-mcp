@@ -1,0 +1,258 @@
+{
+  "schemaVersion": 1,
+  "id": "firecrawl-mcp",
+  "kind": "provider-connector",
+  "artifactType": "connector",
+  "qualityVersion": 2,
+  "title": "Firecrawl MCP server",
+  "description": "Discover a bounded set of site URLs, choose one relevant page, and request its Markdown content. Provider billing, access restrictions and page-level failures remain visible.",
+  "status": "ready",
+  "verification": "mock-only",
+  "releaseEligible": true,
+  "maintainer": "jannikco",
+  "license": "MIT",
+  "product": "pipmcp",
+  "appSlug": "firecrawl",
+  "appName": "Firecrawl",
+  "operationIds": [
+    "map_site",
+    "scrape_page"
+  ],
+  "sourceRevision": "f77ff04804f59551d6bb6e19a4bd061309b9ea8ced3c944e19d7558efae8f742",
+  "evidence": [
+    "Actual tools/call and direct-provider request contract tests"
+  ],
+  "provenance": [
+    "https://docs.firecrawl.dev/api-reference/v2-openapi.json"
+  ],
+  "attributionSlug": "github-firecrawl-mcp",
+  "connectorId": "firecrawl",
+  "connector": {
+    "id": "firecrawl",
+    "name": "Firecrawl",
+    "version": "0.1.0",
+    "baseUrl": "https://api.firecrawl.dev/v2",
+    "auth": {
+      "type": "bearer",
+      "env": "FIRECRAWL_API_KEY"
+    },
+    "description": "Map a site and fetch a selected page as Markdown through v2 JSON endpoints. No arbitrary browser actions, binary files or streaming transport is exposed.",
+    "tools": [
+      {
+        "name": "map_site",
+        "description": "Discover up to 100 site URLs with a provider-side 10-second timeout.",
+        "method": "POST",
+        "path": "/map",
+        "readOnly": true,
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "pattern": "^https://[^\\s]+$"
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          "required": [
+            "url"
+          ],
+          "additionalProperties": false
+        },
+        "bindings": {
+          "path": [],
+          "query": {},
+          "body": {
+            "url": "url",
+            "limit": "limit"
+          }
+        },
+        "sampleArguments": {
+          "url": "https://docs.firecrawl.dev",
+          "limit": 10
+        },
+        "provenance": [
+          "https://docs.firecrawl.dev/api-reference/v2-openapi.json"
+        ],
+        "body": {
+          "timeout": 10000
+        }
+      },
+      {
+        "name": "scrape_page",
+        "description": "Fetch a selected URL as Markdown with a 10-second provider timeout. Check success and returned data rather than assuming complete site extraction.",
+        "method": "POST",
+        "path": "/scrape",
+        "readOnly": true,
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "pattern": "^https://[^\\s]+$"
+            }
+          },
+          "required": [
+            "url"
+          ],
+          "additionalProperties": false
+        },
+        "bindings": {
+          "path": [],
+          "query": {},
+          "body": {
+            "url": "url"
+          }
+        },
+        "sampleArguments": {
+          "url": "https://docs.firecrawl.dev/introduction"
+        },
+        "provenance": [
+          "https://docs.firecrawl.dev/api-reference/v2-openapi.json"
+        ],
+        "body": {
+          "formats": [
+            "markdown"
+          ],
+          "timeout": 10000
+        }
+      }
+    ],
+    "provenance": [
+      "https://docs.firecrawl.dev/api-reference/v2-openapi.json"
+    ],
+    "sourceEvidence": [
+      {
+        "url": "https://docs.firecrawl.dev/api-reference/v2-openapi.json",
+        "sha256": "9629a3c8681d140c3927e84276875be5728a66e08255f04acc0ab35f8461902f",
+        "checkedAt": "2026-11-08T13:24:07.469650+00:00",
+        "method": "https-get"
+      }
+    ],
+    "verification": "mock-only",
+    "providerLiveValidation": "not-run",
+    "workflow": {
+      "name": "Map and read a selected page",
+      "description": "Discover a bounded set of site URLs, choose one relevant page, and request its Markdown content. Provider billing, access restrictions and page-level failures remain visible.",
+      "steps": [
+        "map_site",
+        "scrape_page"
+      ]
+    },
+    "repoId": "firecrawl-mcp",
+    "appSlug": "firecrawl",
+    "product": "pipmcp",
+    "artifactType": "connector",
+    "sourceRevision": "f77ff04804f59551d6bb6e19a4bd061309b9ea8ced3c944e19d7558efae8f742",
+    "capabilityEvidence": {
+      "local": {
+        "level": "Tested",
+        "operations": [
+          {
+            "name": "map_site",
+            "level": "Tested",
+            "evidenceRefs": [
+              "Provider request/stdio contract tests"
+            ],
+            "method": "contract-fixture"
+          },
+          {
+            "name": "scrape_page",
+            "level": "Tested",
+            "evidenceRefs": [
+              "Provider request/stdio contract tests"
+            ],
+            "method": "contract-fixture"
+          }
+        ],
+        "evidenceRefs": [
+          "Provider request/stdio contract tests"
+        ],
+        "mode": "local"
+      },
+      "managed": {
+        "level": "Documented",
+        "operations": [
+          {
+            "name": "map_site",
+            "level": "Documented",
+            "evidenceRefs": [],
+            "method": "documentation"
+          },
+          {
+            "name": "scrape_page",
+            "level": "Documented",
+            "evidenceRefs": [],
+            "method": "documentation"
+          }
+        ],
+        "evidenceRefs": [],
+        "mode": "managed"
+      }
+    },
+    "managedAvailability": {
+      "status": "listed",
+      "checkedAt": "2026-11-08T13:20:45.156456+00:00"
+    }
+  },
+  "capabilityEvidence": {
+    "local": {
+      "level": "Tested",
+      "operations": [
+        {
+          "name": "map_site",
+          "level": "Tested",
+          "evidenceRefs": [
+            "Provider request/stdio contract tests"
+          ],
+          "method": "contract-fixture"
+        },
+        {
+          "name": "scrape_page",
+          "level": "Tested",
+          "evidenceRefs": [
+            "Provider request/stdio contract tests"
+          ],
+          "method": "contract-fixture"
+        }
+      ],
+      "evidenceRefs": [
+        "Provider request/stdio contract tests"
+      ],
+      "mode": "local"
+    },
+    "managed": {
+      "level": "Documented",
+      "operations": [
+        {
+          "name": "map_site",
+          "level": "Documented",
+          "evidenceRefs": [],
+          "method": "documentation"
+        },
+        {
+          "name": "scrape_page",
+          "level": "Documented",
+          "evidenceRefs": [],
+          "method": "documentation"
+        }
+      ],
+      "evidenceRefs": [],
+      "mode": "managed"
+    }
+  },
+  "utility": {
+    "problem": "Discover a bounded set of site URLs, choose one relevant page, and request its Markdown content. Provider billing, access restrictions and page-level failures remain visible.",
+    "output": "Actual provider API results through local MCP tools"
+  },
+  "providerDocs": "https://docs.firecrawl.dev/api-reference/v2-openapi.json",
+  "factory": "leadadapter-pipmcp",
+  "generatorVersion": 2
+}

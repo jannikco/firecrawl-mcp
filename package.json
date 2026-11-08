@@ -1,0 +1,21 @@
+{
+  "name": "firecrawl-mcp",
+  "version": "0.2.0",
+  "description": "Discover a bounded set of site URLs, choose one relevant page, and request its Markdown content. Provider billing, access restrictions and page-level failures remain visible.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "firecrawl-mcp": "server.mjs"
+  },
+  "scripts": {
+    "start": "node example.mjs",
+    "server": "node server.mjs",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "2.4.0"
+  }
+}
